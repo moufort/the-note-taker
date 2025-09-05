@@ -119,7 +119,8 @@ TaskManager >> getInBoxTask [
 { #category : 'accessing' }
 TaskManager >> getLateTask [
 
-	^ self tasks select: [ :t | (t limitDate < DateAndTime now) and: t isTrash not ]
+	^ self tasks select: [ :t |
+		  (t limitDate < DateAndTime now) and: [ t isTrash not and: [t isDone not] ] ].
 ]
 
 { #category : 'accessing' }

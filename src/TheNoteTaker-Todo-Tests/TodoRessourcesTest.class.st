@@ -11,14 +11,14 @@ TodoRessourcesTest >> doneTodayTask [
 	^ Task new
 		  title: 'DoneTask';
 		  description: 'This is a done task';
-		limitDate: Date today;
+		  limitDate: Date today;
 		  isDone: true
 ]
 
 { #category : 'as yet unclassified' }
 TodoRessourcesTest >> generateTaskManager [
 
-	| taskManager tag1 tag2 tag3 task1 task2 task3 |
+	| taskManager tag1 tag2 tag3 task1 task2 task3 task4 |
 	taskManager := TaskManager new.
 
 	tag1 := taskManager addTagNamed: 'tag1'.
@@ -28,12 +28,21 @@ TodoRessourcesTest >> generateTaskManager [
 	task1 := taskManager addTask: self doneTodayTask.
 	task2 := taskManager addTask: self trashTask.
 	task3 := taskManager addTask: self lateTask.
+	task4 := taskManager addTask: self inBoxTask.
 
 	tag1 addTask: task1.
 	tag2 addTask: task1.
 	tag3 addTask: task3.
 
 	^ taskManager
+]
+
+{ #category : 'as yet unclassified' }
+TodoRessourcesTest >> inBoxTask [
+
+	^ Task new
+		  title: 'InBox';
+		  description: 'This is a in box task'
 ]
 
 { #category : 'as yet unclassified' }
