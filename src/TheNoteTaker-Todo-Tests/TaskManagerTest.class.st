@@ -143,10 +143,54 @@ TaskManagerTest >> testLoadWhenNonExistantFile [
 ]
 
 { #category : 'tests' }
+TaskManagerTest >> testReplaceFolderReference [
+
+	| oldFolderRef newFolderRef |
+	oldFolderRef := taskManager fileReference.
+	newFolderRef := memory / 'newFolder'.
+
+	self deny: oldFolderRef exists.
+	self deny: newFolderRef exists.
+	taskManager replaceFolderReference: newFolderRef.
+	
+	self assert: oldFolderRef exists.
+	self deny: newFolderRef exists.
+]
+
+{ #category : 'tests' }
+TaskManagerTest >> testReplaceFolderReferenceLoadWhenThereAFile [
+
+	| newTaskManager |
+	taskManager save.
+	(memory / 'Truc') ensureCreateDirectory.
+	newTaskManager := TaskManager new folderReference: memory / 'Truc'.
+
+	self assertEmpty: newTaskManager tasks.
+	self assertEmpty: newTaskManager tags.
+
+	newTaskManager replaceFolderReference: memory.
+
+	self assert: taskManager tasks size equals: newTaskManager tasks size.
+	taskManager tasks do: [ :each |
+			self
+				deny:
+				(newTaskManager tasks detect: [ :each2 | each title = each2 title ])
+				equals: nil ].
+	self assert: taskManager tags size equals: newTaskManager tags size.
+	taskManager tags do: [ :each |
+			self
+				deny:
+				(newTaskManager tags detect: [ :each2 |
+					 each tagName = each2 tagName ])
+				equals: nil ]
+]
+
+{ #category : 'tests' }
 TaskManagerTest >> testSave [
 
 	| ston |
 	ston := STON toString: taskManager.
+	self deny: taskManager fileReference exists.
 
 	taskManager save.
 

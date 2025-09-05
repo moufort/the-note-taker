@@ -125,7 +125,7 @@ NTSpApplication >> initialize [
 	settings := NTSettings new.
 	noteTakerContainer := NTContainer new importFolder:
 		                      self currentFolder.
-	taskContainer := TaskManager new.
+	taskContainer := TaskManager new folderReference: self currentFolder.
 	log := NTLog newWithFolder: self currentFolder.
 	settingPersistence := SystemSettingsPersistence new fileReference:
 		                      self configFileLocation.
@@ -198,6 +198,7 @@ NTSpApplication >> updateApplication [
 	log logFileReference: self currentFolder.
 	settingPersistence fileReference: self configFileLocation.
 	noteTakerContainer replaceFolder: self currentFolder.
+	taskContainer replaceFolderReference: self currentFolder.
 	mainPresenter ifNotNil: [ :main | main updatePresenter ].
 	self importSettings
 ]

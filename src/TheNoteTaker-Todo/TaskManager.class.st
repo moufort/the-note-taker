@@ -186,9 +186,17 @@ TaskManager >> removetasks: aCollectionOfNTTodo [
 ]
 
 { #category : 'removing - notes' }
+TaskManager >> replaceFolderReference: aFileReference [
+
+	self save.
+	self folderReference: aFileReference.
+	self load
+]
+
+{ #category : 'removing - notes' }
 TaskManager >> save [
 
-	fileReference writeStreamDo: [ :str | str << (STON toString: self) ]
+	fileReference ifNotNil: [ :fileRef | fileRef writeStreamDo: [ :str | str << (STON toString: self) ]]
 ]
 
 { #category : 'accessing' }
